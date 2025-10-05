@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>शंभू दयाल इंटर कॉलेज - स्टाफ</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Hind:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Poppins', 'Hind', sans-serif;
+      background: #f4f6f9;
+      margin: 0;
+      padding: 0;
+    }
+
+    .staff-section {
+      padding: 50px 20px;
+      background: linear-gradient(135deg, #f0f7ff 0%, #fdfdfd 100%);
+    }
+
+    .category-title {
+      text-align: center;
+      font-size: 28px;
+      color: #1e3a8a;
+      margin: 50px 0 30px;
+      position: relative;
+      animation: fadeDown 0.8s ease-in-out;
+    }
+
+    .category-title:after {
+      content: '';
+      position: absolute;
+      width: 60px;
+      height: 3px;
+      background: #3b82f6;
+      bottom: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 2px;
+    }
+
+    .staff-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 25px;
+    }
+
+    .staff-card {
+      background: #fff;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      text-align: center;
+      cursor: pointer;
+      transform: translateY(30px);
+      opacity: 0;
+      animation: fadeUp 0.8s forwards;
+    }
+
+    .staff-card:hover {
+      transform: translateY(-8px) scale(1.03);
+      transition: all 0.3s ease-in-out;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+    }
+
+    .staff-img-container {
+      height: 180px;
+      overflow: hidden;
+    }
+
+    .staff-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .staff-card:hover .staff-img {
+      transform: scale(1.1);
+    }
+
+    .staff-details {
+      padding: 15px;
+    }
+
+    .staff-name {
+      font-size: 17px;
+      color: #1e3a8a;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .staff-position {
+      color: #3b82f6;
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    /* मोडल */
+    .staff-modal {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .staff-modal-content {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+      position: relative;
+      animation: scaleUp 0.4s ease-in-out;
+    }
+
+    .staff-modal-content img {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 15px;
+    }
+
+    .staff-modal-content h2 {
+      margin: 0;
+      color: #1e3a8a;
+    }
+
+    .staff-modal-content p {
+      margin: 6px 0;
+      font-size: 15px;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 12px; right: 15px;
+      font-size: 24px;
+      cursor: pointer;
+      color: #444;
+    }
+
+    /* Animations */
+    @keyframes fadeUp {
+      to { transform: translateY(0); opacity: 1; }
+    }
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes scaleUp {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+<section class="staff-section" id="staffSection"></section>
+
+<script>
+const staffData = {
+  "प्रवक्ता": [
+    { "photo": "images/sudhir.jpg", "name": "श्री सुधीर कुमार वर्मा", "post": "प्रवक्ता" },
+    { "photo": "images/kishanlal.jpg", "name": "श्री किशन लाल", "post": "प्रवक्ता" },
+    { "photo": "images/sanjay1.jpg", "name": "श्री संजय कुमार", "post": "प्रवक्ता" },
+    { "photo": "images/nirdosh.jpg", "name": "श्री निर्दोष कुमार", "post": "प्रवक्ता" },
+    { "photo": "images/saroj.jpg", "name": "श्री सरोज वर्मा", "post": "प्रवक्ता" },
+    { "photo": "images/rajeev.jpg", "name": "श्री राजीव त्यागी", "post": "प्रवक्ता" },
+    { "photo": "images/sanjay2.jpg", "name": "श्री संजय कुमार", "post": "प्रवक्ता" },
+    { "photo": "images/kapil.jpg", "name": "श्री कपिल अग्रवाल", "post": "प्रवक्ता" },
+    { "photo": "images/lokesh.jpg", "name": "श्री लोकेश चंद्र शर्मा", "post": "प्रवक्ता" },
+    { "photo": "images/jayprakash.jpg", "name": "श्री जय प्रकाश", "post": "प्रवक्ता" },
+    { "photo": "images/kuldeep.jpg", "name": "श्री कुलदीप कुमार", "post": "प्रवक्ता" },
+    { "photo": "images/manju.jpg", "name": "श्रीमती मंजू बाला", "post": "प्रवक्ता" },
+    { "photo": "images/yatveer.jpg", "name": "श्री यतवीर सिंह", "post": "प्रवक्ता" },
+    { "photo": "images/satish.jpg", "name": "श्री सतीश चन्द्र", "post": "प्रवक्ता" },
+    { "photo": "images/sonia.jpg", "name": "श्रीमती सोनिया", "post": "प्रवक्ता" },
+    { "photo": "images/vipul.jpg", "name": "श्री विपुल कुमार अवस्थी", "post": "प्रवक्ता" }
+  ],
+  "सहायक अध्यापक": [
+    { "photo": "images/ravi.jpg", "name": "श्री रवि कुमार", "post": "सहायक अध्यापक" },
+    { "photo": "images/aanju.jpg", "name": "श्रीमती अंजु गंगवार", "post": "सहायक अध्यापक" },
+    { "photo": "images/seema.jpg", "name": "श्रीमती सीमा रानी", "post": "सहायक अध्यापक" },
+    { "photo": "images/virendra.jpg", "name": "श्री वीरेंद्र", "post": "सहायक अध्यापक" },
+    { "photo": "images/mukesh.jpg", "name": "श्री मुकेश पाल", "post": "सहायक अध्यापक" },
+    { "photo": "images/mulshankar.jpg", "name": "श्री मूल शंकर शर्मा", "post": "सहायक अध्यापक" },
+    { "photo": "images/mamta.jpg", "name": "श्रीमती ममता रानी", "post": "सहायक अध्यापक" },
+    { "photo": "images/sunita_tomar.jpg", "name": "श्रीमती सुनीता तोमर", "post": "सहायक अध्यापक" },
+    { "photo": "images/anirudra.jpg", "name": "श्री अनिरुद्ध कुमार", "post": "सहायक अध्यापक" },
+    { "photo": "images/ramnivas.jpg", "name": "श्री राम निवास शर्मा", "post": "सहायक अध्यापक" },
+    { "photo": "images/gita.jpg", "name": "श्रीमती गीता", "post": "सहायक अध्यापक" },
+    { "photo": "images/poorn.jpg", "name": "लेफ्टिनेंट पूर्ण सिंह", "post": "सहायक अध्यापक" },
+    { "photo": "images/sachin.jpg", "name": "श्री सचिन गुप्ता", "post": "सहायक अध्यापक" },
+    { "photo": "images/sanjeev.jpg", "name": "श्री संजीव कुमार शर्मा", "post": "सहायक अध्यापक" },
+    { "photo": "images/anita.jpg", "name": "श्रीमती अनिता साही", "post": "सहायक अध्यापक" },
+    { "photo": "images/kiran.jpg", "name": "श्रीमती किरण कुमारी", "post": "सहायक अध्यापक" },
+    { "photo": "images/amita.jpg", "name": "श्रीमती अमिता देवी", "post": "सहायक अध्यापक" },
+    { "photo": "images/sarita.jpg", "name": "श्रीमती सरिता देवी", "post": "सहायक अध्यापक" },
+    { "photo": "images/monika.jpg", "name": "श्रीमती मोनिका धवन", "post": "सहायक अध्यापक" },
+    { "photo": "images/rahul.jpg", "name": "श्री राहुल सिंह", "post": "सहायक अध्यापक" },
+    { "photo": "images/surendra.jpg", "name": "श्री सुरेंद्र कुमार", "post": "सहायक अध्यापक" },
+    { "photo": "images/savita.jpg", "name": "श्रीमती सविता देवी", "post": "सहायक अध्यापक" }
+  ],
+  "कंप्यूटर": [
+    { "photo": "images/sp.jpg", "name": "श्री एस.पी. थपलियाल", "post": "कंप्यूटर शिक्षक" },
+    { "photo": "images/raghuvir.jpg", "name": "श्री रघुवीर बिष्ट", "post": "कंप्यूटर शिक्षक" },
+    { "photo": "images/avnish.jpg", "name": "श्री अवनीश पाण्डेय", "post": "कंप्यूटर शिक्षक" },
+    { "photo": "images/aadesh.jpg", "name": "श्री आदेश कुमार", "post": "कंप्यूटर शिक्षक" },
+    { "photo": "images/mayank.jpg", "name": "श्री मयंक कुमार", "post": "कंप्यूटर शिक्षक" },
+    { "photo": "images/sunita.jpg", "name": "श्रीमती सुनीता", "post": "कंप्यूटर शिक्षक" },
+    { "photo": "images/deepak.jpg", "name": "श्री दीपक", "post": "कंप्यूटर शिक्षक" },
+    { "photo": "images/kamal.jpg", "name": "श्री कमल किशोर सिंह", "post": "कंप्यूटर शिक्षक" },
+    { "photo": "images/rajesh.jpg", "name": "श्री राजेश कुमार", "post": "कंप्यूटर शिक्षक" }
+  ],
+  "लिपिक": [
+    { "photo": "images/rajkumar.jpg", "name": "श्री राज कुमार गुप्ता", "post": "लिपिक" },
+    { "photo": "images/babita.jpg", "name": "श्रीमती बबीता त्यागी", "post": "लिपिक" },
+    { "photo": "images/ravindra.jpg", "name": "श्री रविन्द्र कुमार कश्यप", "post": "लिपिक" },
+    { "photo": "images/manoj.jpg", "name": "श्री मनोज कुमार", "post": "लिपिक" }
+  ],
+  "चतुर्थ श्रेणी": [
+    { "photo": "images/dolly.jpg", "name": "श्रीमती डॉली", "post": "परिचारिका" },
+    { "photo": "images/narendra.jpg", "name": "श्री नरेन्द्र कुमार", "post": "चतुर्थ श्रेणी कर्मचारी" },
+    { "photo": "images/mohit.jpg", "name": "श्री मोहित शर्मा", "post": "चतुर्थ श्रेणी कर्मचारी" },
+    { "photo": "images/arvind.jpg", "name": "श्री अरविन्द कुमार", "post": "चतुर्थ श्रेणी कर्मचारी" },
+    { "photo": "images/manoj_mishra.jpg", "name": "श्री मनोज कुमार मिश्र", "post": "चतुर्थ श्रेणी कर्मचारी" },
+    { "photo": "images/praveen.jpg", "name": "श्री प्रवीण कुमार", "post": "चतुर्थ श्रेणी कर्मचारी" },
+    { "photo": "images/arvind_gupta.jpg", "name": "श्री अरविन्द गुप्ता", "post": "चतुर्थ श्रेणी कर्मचारी" },
+    { "photo": "images/ritu.jpg", "name": "श्रीमती रीतु गुप्ता", "post": "चतुर्थ श्रेणी कर्मचारी" }
+  ],
+  "माली": [
+    { "photo": "images/shatrohan.jpg", "name": "श्री शत्रोहन", "post": "माली" }
+  ]
+};
+
+// सेक्शन बनाना
+const staffSection = document.getElementById("staffSection");
+
+Object.keys(staffData).forEach(category => {
+  const title = document.createElement("h2");
+  title.className = "category-title";
+  title.textContent = category;
+  staffSection.appendChild(title);
+
+  const grid = document.createElement("div");
+  grid.className = "staff-grid";
+
+  staffData[category].forEach(staff => {
+    const card = document.createElement("div");
+    card.className = "staff-card";
+    card.innerHTML = `
+      <div class="staff-img-container">
+        <img src="${staff.photo}" alt="${staff.name}" class="staff-img">
+      </div>
+      <div class="staff-details">
+        <h3 class="staff-name">${staff.name}</h3>
+        <p class="staff-position">${staff.post}</p>
+      </div>
+    `;
+    card.addEventListener("click", () => openStaffModal(staff));
+    grid.appendChild(card);
+  });
+
+  staffSection.appendChild(grid);
+});
+
+// मोडल
+function openStaffModal(staff) {
+  const modalHTML = `
+    <div class="staff-modal" onclick="closeStaffModal(event)">
+      <div class="staff-modal-content">
+        <span class="close-btn" onclick="closeStaffModal(event)">&times;</span>
+        <img src="${staff.photo}" alt="${staff.name}">
+        <h2>${staff.name}</h2>
+        <p><strong>${staff.post}</strong></p>
+      </div>
+    </div>
+  `;
+  document.body.insertAdjacentHTML("beforeend", modalHTML);
+}
+
+function closeStaffModal(e) {
+  if (e.target.classList.contains("staff-modal") || e.target.classList.contains("close-btn")) {
+    document.querySelector(".staff-modal").remove();
+  }
+}
+</script>
+
+</body>
+</html>
